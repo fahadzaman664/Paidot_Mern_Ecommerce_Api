@@ -17,10 +17,26 @@ app.use(express.json());
 // (Optional) Add this if using URL-encoded data (like from forms)
 app.use(express.urlencoded({ extended: true }));
 // (Optional) Enable CORS
+// app.use(cors({
+//   origin: true,
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   credentials: true
+// }));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://paidot-mern-ecommerce-client-fronte.vercel.app"
+];
+
 app.use(cors({
-  origin: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 
 //home
